@@ -1,0 +1,16 @@
+[8] Undefined variable: _SESSION
+Fichier : /Users/florent/Git/DarkPHP/dark/core/profiler.php (ligne 42)
+[8] Undefined variable: _SESSION
+Fichier : /Users/florent/Git/DarkPHP/dark/core/profiler.php (ligne 42)
+[8] Undefined variable: _SESSION
+Fichier : /Users/florent/Git/DarkPHP/dark/core/profiler.php (ligne 42)
+[8] Undefined variable: _SESSION
+Fichier : /Users/florent/Git/DarkPHP/dark/core/profiler.php (ligne 42)
+[8] Undefined variable: _SESSION
+Fichier : /Users/florent/Git/DarkPHP/dark/core/profiler.php (ligne 42)
+[8] Undefined variable: _SESSION
+Fichier : /Users/florent/Git/DarkPHP/dark/core/profiler.php (ligne 42)
+[8] Undefined variable: _SESSION
+Fichier : /Users/florent/Git/DarkPHP/dark/core/profiler.php (ligne 42)
+[8] Undefined variable: _SESSION
+Fichier : /Users/florent/Git/DarkPHP/dark/core/profiler.php (ligne 42)
