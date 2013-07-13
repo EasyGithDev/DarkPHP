@@ -7,7 +7,6 @@ namespace Dark\Core\Db;
  * and open the template in the editor.
  */
 
-
 /**
  * Description of Db
  *
@@ -15,10 +14,9 @@ namespace Dark\Core\Db;
  */
 class Db {
 
-    private static $instance;
     private $link;
 
-    private function __construct($connection) {
+    public function __construct($connection) {
 
 	$this->link = mysqli_connect($connection->getHost(), $connection->getUser(), $connection->getPassword(), $connection->getPort());
 
@@ -64,53 +62,27 @@ class Db {
 	mysqli_close($this->link);
     }
 
-    public static function getInstance($connection = '') {
-
-	if (is_object($connection)) {
-	    $name = $connection->getName();
-	} elseif (is_string($connection)) {
-	    $name = $connection;
-	} else {
-	    return FALSE;
-	}
-
-	if (isset(self::$instance[$name]))
-	    return self::$instance[$name];
-
-	if (empty($name) && count(self::$instance)) {
-	    $values = array_values(self::$instance);
-	    return $values[0];
-	}
-
-	if (is_object($connection)) {
-	    self::$instance[$name] = new self($connection);
-	    return self::$instance[$name];
-	}
-
-	return FALSE;
-    }
-
     public function getLink() {
 	return $this->link;
     }
 
     public function query($sql) {
-	
+
 
 	//mysqli_query($this->link, 'SET profiling = 1');
-	
+
 	if (!($result = mysqli_query($this->link, $sql)))
 	    throw new \Exception(\mysqli_error($this->link));
-	
+
 	/*
-	$show_profiles = mysqli_query($this->link, 'SHOW PROFILE');
-	
-	while( $row = $show_profiles->fetch_assoc() ) {
-    echo '<pre>';   
-    print_r( $row );    
-    echo '</pre>';
-}*/
-	
+	  $show_profiles = mysqli_query($this->link, 'SHOW PROFILE');
+
+	  while( $row = $show_profiles->fetch_assoc() ) {
+	  echo '<pre>';
+	  print_r( $row );
+	  echo '</pre>';
+	  } */
+
 	return $result;
     }
 
