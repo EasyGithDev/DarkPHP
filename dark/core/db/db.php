@@ -66,18 +66,14 @@ class Db {
 	return $this->link;
     }
 
-    public function query($sql) {
-
-	//mysqli_query($this->link, 'SET profiling = 1');
-	/*
-	  $show_profiles = mysqli_query($this->link, 'SHOW PROFILE');
-
-	  while( $row = $show_profiles->fetch_assoc() ) {
-	  echo '<pre>';
-	  print_r( $row );
-	  echo '</pre>';
-	  } */
-
+    public function query($sql, $bind = array()) {
+	
+	if(count($bind)) {
+	    $replace = array_map(function($elt) {return $this->quote($elt);}, $bind);
+	    $search = array_fill(0, count($replace), '?');
+	    $sql = str_replace($search, $replace, $sql);
+	}
+	
 	if (!($result = mysqli_query($this->link, $sql)))
 	    throw new \Exception(\mysqli_error($this->link));
 
