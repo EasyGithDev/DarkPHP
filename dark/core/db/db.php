@@ -16,7 +16,7 @@ class Db {
 
     private $link;
 
-    public function __construct($connection) {
+    public function __construct(DbConnection $connection) {
 
 	$this->link = mysqli_connect($connection->getHost(), $connection->getUser(), $connection->getPassword(), $connection->getPort());
 
@@ -68,12 +68,7 @@ class Db {
 
     public function query($sql) {
 
-
 	//mysqli_query($this->link, 'SET profiling = 1');
-
-	if (!($result = mysqli_query($this->link, $sql)))
-	    throw new \Exception(\mysqli_error($this->link));
-
 	/*
 	  $show_profiles = mysqli_query($this->link, 'SHOW PROFILE');
 
@@ -82,6 +77,9 @@ class Db {
 	  print_r( $row );
 	  echo '</pre>';
 	  } */
+
+	if (!($result = mysqli_query($this->link, $sql)))
+	    throw new \Exception(\mysqli_error($this->link));
 
 	return $result;
     }
