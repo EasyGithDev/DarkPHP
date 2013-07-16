@@ -18,7 +18,7 @@ class Profiler {
     protected $start = 0;
     protected $end = 0;
 
-    public function getInstance() {
+    public static function create() {
 	if (is_null(self::$instance)) {
 	    self::$instance = new self;
 	}
@@ -35,12 +35,13 @@ class Profiler {
     }
 
     public function __toString() {
+
 	return 'TIME ' . PHP_EOL . $this->getTime() . PHP_EOL .
 		'MEMORY ' . PHP_EOL . memory_get_usage() . PHP_EOL .
 		'POST ' . PHP_EOL . '<pre>' . var_export($_POST, 1) . '</pre>' . PHP_EOL .
 		'GET ' . PHP_EOL . '<pre>' . var_export($_GET, 1) . '<pre>' . PHP_EOL .
-		'SESSION ' . PHP_EOL . '<pre>' . var_export($_SESSION, 1) . '<pre>' . PHP_EOL .
-		'COOKIE ' . PHP_EOL . '<pre>' . var_export($_COOKIE, 1) . '<pre>' . PHP_EOL;
+		'SESSION ' . PHP_EOL . '<pre>' . (isset($_SESSION) ? var_export($_SESSION, 1) : '') . '<pre>' . PHP_EOL .
+		'COOKIE ' . PHP_EOL . '<pre>' . (isset($_COOKIE) ? var_export($_COOKIE, 1) : '') . '<pre>' . PHP_EOL;
     }
 
 }
