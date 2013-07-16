@@ -5,7 +5,7 @@
  * and open the template in the editor.
  */
 
-namespace Dark;
+namespace Dark\Core\Cookie;
 
 /**
  * Description of SecureCookie
@@ -14,22 +14,33 @@ namespace Dark;
  */
 class Cookie {
 
-    protected $name;
-    protected $value = array();
+    protected $name = '';
+    protected $values = array();
     protected $expire = 0;
     protected $path = '/';
     protected $domain = null;
     protected $secure = false;
     protected $httponly = false;
-    protected $hash = 'Q9S7aw8s';
+    protected $hash = 'azerty';
     protected $keep = array();
 
-    public function __construct($name) {
-	if (empty($name))
-	    throw new \Exception('Vous devez renseigner le nom du ccokie');
-	$this->name = $name;
-	$this->read();
+    public static function create($params = array()) {
+
+	$instance = new self();
+	$class_vars = get_class_vars(__CLASS__);
+
+	foreach ($class_vars as $name => $value) {
+	    if (isset($params[$name]))
+		$instance->$name = $params[$name];
+	}
+
+	if (empty($instance->name))
+	    throw new \Exception('The ccokie name can not be empty');
+
+	$instance->read();
 	ob_start();
+
+	return $instance;
     }
 
     public function __destruct() {
@@ -38,39 +49,39 @@ class Cookie {
     }
 
     public function __get($key) {
-	return isset($this->value[$key]) ? $this->value[$key] : FALSE;
+	return isset($this->values[$key]) ? $this->values[$key] : FALSE;
     }
 
     public function __set($key, $val) {
-	$this->value[$key] = htmlspecialchars(trim($val));
+	$this->values[$key] = htmlspecialchars(trim($val));
     }
 
     public function delete($key) {
-	if (!isset($this->value[$key]))
+	if (!isset($this->values[$key]))
 	    return FALSE;
-	unset($this->value[$key]);
+	unset($this->values[$key]);
 	return TRUE;
     }
 
     public function clear() {
-	$diff = array_diff(array_keys($this->value), $this->keep);
+	$diff = array_diff(array_keys($this->values), $this->keep);
 	foreach ($diff as $key => $val)
-	    unset($this->value[$val]);
+	    unset($this->values[$val]);
     }
 
     public function destroy() {
-	$this->value = array();
+	$this->values = array();
 	$this->expire = time() - 24 * 3600;
 	setCookie($this->name, '', $this->expire, $this->path, $this->domain, $this->secure, $this->httponly);
     }
 
     public function __toString() {
-	return print_r($this->value, true);
+	return print_r($this->values, true);
     }
 
     private function write() {
-	$checksum = $this->checksum($this->value);
-	$data = array_merge($this->value, array('hash' => $checksum));
+	$checksum = $this->checksum($this->values);
+	$data = array_merge($this->values, array('hash' => $checksum));
 	$serialized = serialize($data);
 	$encrypted = $this->encrypt($serialized);
 	setCookie($this->name, $encrypted, $this->expire, $this->path, $this->domain, $this->secure, $this->httponly);
@@ -86,9 +97,9 @@ class Cookie {
 	$verify = $this->checksum($unserialized);
 
 	if ($checksum != $verify)
-	    throw new Exception('Erreur sur la validation du checksum : ' . $checksum . '!=' . $verify);
+	    throw new \Exception(sprintf('Error checksum validation : %s != %s ', $checksum, $verify));
 
-	$this->value = $unserialized;
+	$this->values = $unserialized;
 	return TRUE;
     }
 
@@ -105,5 +116,3 @@ class Cookie {
     }
 
 }
-
-?>
