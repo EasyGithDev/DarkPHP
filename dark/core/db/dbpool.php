@@ -29,8 +29,9 @@ class DbPool {
 	if (!count(self::$instances))
 	    return FALSE;
 
-	if (empty($name))
-	    return self::$instances[0];
+	if (empty($name)) {
+	    return array_shift(array_values(self::$instances));
+	}
 
 	return isset(self::$instances[$name]) ? self::$instances[$name] : FALSE;
     }
