@@ -12,7 +12,7 @@ namespace Dark\Core\Db;
  *
  * @author florent
  */
-class DbService {
+class DbPool {
 
     private static $instances;
 
