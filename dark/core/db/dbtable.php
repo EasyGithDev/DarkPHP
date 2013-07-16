@@ -58,7 +58,7 @@ class DbTable {
 		$str_orderby .
 		$str_limit;
 
-	$this->db->fetchIterator($sql, $mode);
+	return $this->db->fetchIterator($sql, $mode);
     }
 
     public function insert($values, $ignore = FALSE, $priority = '') {
