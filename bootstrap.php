@@ -17,7 +17,7 @@ require COREPATH . DS . 'autoloader.php';
 \Dark\Core\Autoloader::add_core_namespace('Dark\\Core', true);
 
 $classes = array(
-    'Dark\\Core\\Db\\DbConnection' => COREPATH . '/db/dbconnection.php',
+    'Dark\\Core\\Db\\DbConnector' => COREPATH . '/db/dbconnector.php',
     'Dark\\Core\\Db\\DbIterator' => COREPATH . '/db/dbiterator.php',
     'Dark\\Core\\Db\\Db' => COREPATH . '/db/db.php',
     'Dark\\Core\\Error\\Handler' => COREPATH . '/error/handler.php',
