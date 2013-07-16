@@ -34,15 +34,15 @@ class Db {
 	    }
 	mysqli_select_db($this->link, $connection->getDb());
     }
-
-    private function prepareValues($values) {
+    
+    public function prepareValues($values) {
 	$str_values = '';
 	foreach ($values as $k => $v)
 	    $str_values .= $k . '="' . $this->quote($v) . '",';
 	return rtrim($str_values, ',');
     }
 
-    private function prepareCriterias($where) {
+    public function prepareCriterias($where) {
 	$str_where = '';
 	foreach ($where as $criterias) {
 	    $size = count($criterias);
@@ -62,18 +62,25 @@ class Db {
 	mysqli_close($this->link);
     }
 
+    public function setLink($link) {
+	$this->link = $link;
+	return $this;
+    }
+
     public function getLink() {
 	return $this->link;
     }
 
     public function query($sql, $bind = array()) {
-	
-	if(count($bind)) {
-	    $replace = array_map(function($elt) {return $this->quote($elt);}, $bind);
+
+	if (count($bind)) {
+	    $replace = array_map(function($elt) {
+			return $this->quote($elt);
+		    }, $bind);
 	    $search = array_fill(0, count($replace), '?');
 	    $sql = str_replace($search, $replace, $sql);
 	}
-	
+
 	if (!($result = mysqli_query($this->link, $sql)))
 	    throw new \Exception(\mysqli_error($this->link));
 
