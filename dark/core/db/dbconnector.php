@@ -19,7 +19,7 @@ class DbConnector {
     protected $user;
     protected $password;
     protected $port;
-    protected $db;
+    protected $dbname;
     protected $charset;
     protected $profiling;
 
@@ -29,8 +29,6 @@ class DbConnector {
 	$class_vars = get_class_vars(__CLASS__);
 
 	foreach ($class_vars as $name => $value) {
-	    echo "$name : $value\n";
-
 	    if (isset($array[$name]))
 		$instance->$name = $array[$name];
 	}
@@ -74,12 +72,12 @@ class DbConnector {
 	return $this;
     }
 
-    public function getDb() {
-	return $this->db;
+    public function getDbname() {
+	return $this->dbname;
     }
 
-    public function setDb($db) {
-	$this->db = $db;
+    public function setDbname($dbname) {
+	$this->dbname = $dbname;
 	return $this;
     }
 

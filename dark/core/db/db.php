@@ -16,9 +16,9 @@ class Db {
 
     private $link;
 
-    public function __construct(DbConnection $connection) {
+    public function __construct(DbConnector $connector) {
 
-	$this->link = mysqli_connect($connection->getHost(), $connection->getUser(), $connection->getPassword(), $connection->getPort());
+	$this->link = mysqli_connect($connector->getHost(), $connector->getUser(), $connector->getPassword(), $connector->getDbname(), $connector->getPort());
 
 	/* Vérification de la connexion */
 	if (mysqli_connect_errno()) {
@@ -26,15 +26,15 @@ class Db {
 	    die();
 	}
 
-	$charset = $connection->getCharset();
+	/* Modification du jeu de résultats */
+	$charset = $connector->getCharset();
 	if (!empty($charset))
-	    if (!mysqli_set_charset($charset)) {
-		printf("Erreur lors du chargement du jeu de caractères utf8 : %s\n", mysqli_error($this->link));
+	    if (!mysqli_set_charset($this->link, $charset)) {
+		printf("Erreur lors du chargement du jeu de caractères %s : %s\n", $charset, mysqli_error($this->link));
 		die();
 	    }
-	mysqli_select_db($this->link, $connection->getDb());
     }
-    
+
     public function prepareValues($values) {
 	$str_values = '';
 	foreach ($values as $k => $v)
