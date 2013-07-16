@@ -17,36 +17,48 @@ class DbTable {
     protected $name;
     protected $db;
 
-    public function __construct($name, Db $db) {
+    public function __construct($name, Db $db = NULL) {
 	$this->name = $name;
+	$this->db = (!is_null($db)) ? $db : DbPool::get();
+    }
+
+    public function getDb() {
+	return $this->db;
+    }
+
+    public function setDb(Db $db) {
 	$this->db = $db;
+	return $this;
     }
 
     /**
      * 
-     * 'colums' => array(), 'where' => array(), 'groupby' => array(), 'having' => array(), 'orderby' => array()
+     * $sql = array(
+     * 		    'colums' => array(), 
+     * 		    'where' => array(), 
+     * 		    'groupby' => array(), 
+     * 		    'having' => array(), 
+     * 		    'orderby' => array(),
+     * 		    'limit' => array()
+     * 	)
      * 
-     * @param type $colums
-     * @param type $where
-     * @param type $groupby
-     * @param type $orderby
      */
-    public function get($sql = array()) {
+    public function fetchIterator($sql = array(), $mode = DbIterator::MODE_ASSOC) {
 
 	$str_colums = (isset($sql['colums'])) ? implode(',', $sql['colums']) : '*';
+	$str_where = (isset($sql['where'])) ? 'WHERE ' . $this->db->prepareCriterias($sql['where']) : '';
 	$str_groupby = (isset($sql['groupby'])) ? 'GROUP BY ' . implode(',', $sql['groupby']) : '';
 	$str_orderby = (isset($sql['orderby'])) ? 'ORDER BY ' . implode(',', $sql['orderby']) : '';
-	$str_where = '';
+	$str_limit = (isset($sql['limit'])) ? 'LIMIT ' . implode(',', $sql['limit']) : '';
 
 	$sql = 'SELECT ' . $str_colums . '
 		FROM ' . $this->name .
 		$str_where .
 		$str_groupby .
-		$str_orderby;
-    }
+		$str_orderby .
+		$str_limit;
 
-    public function getOne($sql = array()) {
-	
+	$this->db->fetchIterator($sql, $mode);
     }
 
     public function insert($values, $ignore = FALSE, $priority = '') {
