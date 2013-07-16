@@ -45,19 +45,23 @@ class DbTable {
      */
     public function fetchIterator($sql = array(), $mode = DbIterator::MODE_ASSOC) {
 
-	$str_colums = (isset($sql['colums'])) ? implode(',', $sql['colums']) : '*';
-	$str_where = (isset($sql['where'])) ? 'WHERE ' . $this->db->prepareCriterias($sql['where']) : '';
-	$str_groupby = (isset($sql['groupby'])) ? 'GROUP BY ' . implode(',', $sql['groupby']) : '';
-	$str_orderby = (isset($sql['orderby'])) ? 'ORDER BY ' . implode(',', $sql['orderby']) : '';
-	$str_limit = (isset($sql['limit'])) ? 'LIMIT ' . implode(',', $sql['limit']) : '';
+	$str_colums = (isset($sql['colums']) and count($sql['colums'])) ? implode(',', $sql['colums']) : '*';
+	$str_where = (isset($sql['where']) and count($sql['where'])) ? ' WHERE ' . $this->db->prepareCriterias($sql['where']) : '';
+	$str_groupby = (isset($sql['groupby']) and count($sql['groupby'])) ? ' GROUP BY ' . implode(',', $sql['groupby']) : '';
+	$str_having = (isset($sql['groupby']) and count($sql['having'])) ? ' HAVING ' . implode(',', $sql['having']) : '';
+	$str_orderby = (isset($sql['orderby']) and count($sql['orderby'])) ? ' ORDER BY ' . implode(',', $sql['orderby']) : '';
+	$str_limit = (isset($sql['limit']) and count($sql['limit'])) ? ' LIMIT ' . implode(',', $sql['limit']) : '';
 
 	$sql = 'SELECT ' . $str_colums . '
 		FROM ' . $this->name .
 		$str_where .
 		$str_groupby .
+		$str_having .
 		$str_orderby .
 		$str_limit;
-
+	
+	//echo $sql;
+	
 	return $this->db->fetchIterator($sql, $mode);
     }
 
