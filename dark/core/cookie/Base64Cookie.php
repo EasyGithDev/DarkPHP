@@ -14,8 +14,12 @@ namespace Dark\Core\Cookie;
  */
 class Base64Cookie extends Cookie {
 
+    public function __construct($params = array()) {
+	parent::__construct($params);
+    }
+
     public static function create($params = array()) {
-	parent::create($params);
+	return new self($params);
     }
 
     protected function encrypt($value) {

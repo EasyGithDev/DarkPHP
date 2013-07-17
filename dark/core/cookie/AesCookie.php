@@ -16,8 +16,12 @@ class AesCookie extends Cookie {
 
     protected $key = 'very secret key';
 
+    public function __construct($params = array()) {
+	parent::__construct($params);
+    }
+
     public static function create($params = array()) {
-	parent::create($params);
+	return new self($params);
     }
 
     public function encrypt($value) {

@@ -24,23 +24,23 @@ class Cookie {
     protected $hash = 'azerty123456';
     protected $keep = array();
 
-    public static function create($params = array()) {
-
-	$instance = new self();
+    public function __construct($params = array()) {
 	$class_vars = get_class_vars(__CLASS__);
 
 	foreach ($class_vars as $name => $value) {
 	    if (isset($params[$name]))
-		$instance->$name = $params[$name];
+		$this->$name = $params[$name];
 	}
 
-	if (empty($instance->name))
+	if (empty($this->name))
 	    throw new \Exception('The ccokie name can not be empty');
 
-	$instance->read();
+	$this->read();
 	ob_start();
+    }
 
-	return $instance;
+    public static function create($params = array()) {
+	return new self($params);
     }
 
     public function __destruct() {
