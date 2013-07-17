@@ -21,7 +21,7 @@ class Cookie {
     protected $domain = null;
     protected $secure = false;
     protected $httponly = false;
-    protected $hash = 'azerty';
+    protected $hash = 'azerty123456';
     protected $keep = array();
 
     public static function create($params = array()) {
@@ -56,7 +56,7 @@ class Cookie {
 	$this->values[$key] = htmlspecialchars(trim($val));
     }
 
-    public function delete($key) {
+    public function __unset($key) {
 	if (!isset($this->values[$key]))
 	    return FALSE;
 	unset($this->values[$key]);
@@ -82,7 +82,7 @@ class Cookie {
     private function write() {
 	$checksum = $this->checksum($this->values);
 	$data = array_merge($this->values, array('hash' => $checksum));
-	$serialized = serialize($data);
+	$serialized = json_encode($data);
 	$encrypted = $this->encrypt($serialized);
 	setCookie($this->name, $encrypted, $this->expire, $this->path, $this->domain, $this->secure, $this->httponly);
     }
@@ -92,7 +92,7 @@ class Cookie {
 	    return FALSE;
 
 	$decrypted = $this->decrypt($_COOKIE[$this->name]);
-	$unserialized = unserialize($decrypted);
+	$unserialized = json_decode($decrypted, true);
 	$checksum = array_pop($unserialized);
 	$verify = $this->checksum($unserialized);
 
