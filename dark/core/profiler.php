@@ -18,15 +18,15 @@ class Profiler {
     protected $start = 0;
     protected $end = 0;
 
+    protected function __construct() {
+	$this->start = microtime(true);
+    }
+    
     public static function create() {
 	if (is_null(self::$instance)) {
 	    self::$instance = new self;
 	}
 	return self::$instance;
-    }
-
-    protected function __construct() {
-	$this->start = microtime(true);
     }
 
     public function getTime() {

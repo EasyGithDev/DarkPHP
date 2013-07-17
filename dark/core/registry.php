@@ -21,7 +21,7 @@ class Registry {
 	$this->values = array();
     }
 
-    public function getInstance() {
+    public static function create() {
 	if (is_null(self::$instance)) {
 	    self::$instance = new self($filename);
 	}
