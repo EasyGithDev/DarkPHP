@@ -1,5 +1,27 @@
 <?php
 
+header("Content-type: text/html; charset=UTF-8");
+
+// Langage par défaut
+ini_set('mbstring.language', 'UTF-8');
+
+// Jeu de caractère interne
+ini_set('mbstring.internal_encoding', 'UTF-8');
+
+// Jeu de caractères par défaut pour les données d'entrée HTTP
+ini_set('mbstring.http_input', 'UTF-8');
+
+// Jeu de caractères par défaut pour les données de sortie HTTP
+ini_set('mbstring.http_output', 'UTF-8');
+
+// Ordre de détection des jeux de caractères
+ini_set('mbstring.detect_order', 'auto');
+
+// A faire dans le php.ini ou httpd.conf
+//ini_set('mbstring.func_overload', 6);
+
+setlocale(LC_ALL, 'fr_FR');
+
 /**
  * Define constantes
  */
@@ -32,14 +54,6 @@ $classes = array(
 foreach (array_keys($classes) as $class)
     Dark\Core\Autoloader::alias_to_namespace($class);
 
-
-/**
- * Do we have access to mbstring?
- * We need this in order to work with UTF-8 strings
- */
-define('MBSTRING', function_exists('mb_get_info'));
-
-
 /**
  * Loading the configuration files
  * 
@@ -51,7 +65,7 @@ $config = Config::getInstance()
 /**
  * Loading the profiling system
  */
-$profiler = Profiler::getInstance();
+$profiler = Profiler::create();
 
 /**
  * Loading the handler error
