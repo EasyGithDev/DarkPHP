@@ -16,12 +16,12 @@ class DbPool {
 
     private static $instances;
 
-    public static function add(\Dark\Core\Db\DbConnection $connection) {
+    public static function add(DbConnector $connector) {
 
-	$name = $connection->getName();
+	$name = $connector->getName();
 
 	if (!isset(self::$instances[$name]))
-	    self::$instances[$name] = new \Dark\Core\Db\Db($connection);
+	    self::$instances[$name] = new Db($connector);
     }
 
     public static function get($name = '') {
