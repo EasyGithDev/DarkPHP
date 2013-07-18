@@ -30,7 +30,8 @@ class DbPool {
 	    return FALSE;
 
 	if (empty($name)) {
-	    return array_shift(array_values(self::$instances));
+	    $values = array_values(self::$instances);
+	    return array_shift($values);
 	}
 
 	return isset(self::$instances[$name]) ? self::$instances[$name] : FALSE;
