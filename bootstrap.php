@@ -44,6 +44,7 @@ $classes = array(
     'Dark\\Core\\Db\\Db' => COREPATH . '/db/db.php',
     'Dark\\Core\\Error\\Handler' => COREPATH . '/error/handler.php',
     'Dark\\Core\\Error\\TxtObserver' => COREPATH . '/error/txtobserver.php',
+    'Dark\\Core\\Error\\FrontObserver' => COREPATH . '/error/frontobserver.php',
     'Dark\\Core\\Profiler' => COREPATH . '/error/profiler.php',
     'Dark\\Core\\Config' => COREPATH . '/error/config.php',
 );
@@ -58,7 +59,7 @@ foreach (array_keys($classes) as $class)
  * Loading the configuration files
  * 
  */
-$config = Config::getInstance()
+$config = Config::create()
 	->load(CONFIGPATH . DS . 'database.ini')
 	->load(CONFIGPATH . DS . 'conf.ini');
 
@@ -72,6 +73,7 @@ $profiler = Profiler::create();
  */
 $handler = new Handler();
 $handler->attach(new TxtObserver(LOGPATH));
+$handler->attach(new FrontObserver());
 
 /**
  * Register all the error/shutdown handlers
