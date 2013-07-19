@@ -44,7 +44,7 @@ class FrontObserver implements \SplObserver {
     }
 
     public function update(\SplSubject $obj) {
-	echo $obj->getError();
+	echo '<pre>', $obj->getError(), '</pre>';
     }
 
 }
