@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * DarkPHP - a PHP library of components
  *
@@ -55,8 +54,10 @@ namespace Dark\Core\Db;
 class DbLoader {
 
     protected $priority = '';
+    protected $priorityValues = array('', 'LOW_PRIORITY', 'CONCURRENT');
     protected $local = false;
     protected $insertionType = '';
+    protected $insertionTypeValues = array('', 'REPLACE', 'IGNORE');
     protected $tablename; //where to import to
     protected $filename;  //where to import from
     protected $headers = array(); //list of the headers
@@ -92,6 +93,9 @@ class DbLoader {
 
 	if (!empty($this->lineTerminatedby))
 	    $lines .= 'TERMINATED BY "' . addslashes($this->lineTerminatedby) . '"';
+
+	$this->priority = (in_array($this->priority, $this->priorityValues)) ? $this->priority : '';
+	$this->insertionType = (in_array($this->insertionType, $this->insertionTypeValues)) ? $this->insertionType : '';
 
 	$search = array(
 	    '[LOW_PRIORITY | CONCURRENT]',
