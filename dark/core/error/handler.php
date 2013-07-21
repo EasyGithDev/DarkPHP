@@ -14,10 +14,18 @@ namespace Dark\Core\Error;
  */
 class Handler implements \SplSubject {
 
-// Ceci est le tableau qui va contenir tous les objets qui nous observent.
+    /**
+     * Ceci est le tableau qui va contenir tous les objets qui nous observent.
+     */
     protected $observers = array();
-// Attribut qui va contenir notre erreur formatée.
-    protected $error;
+    protected $errno;
+    protected $errstr;
+    protected $errfile;
+    protected $errline;
+
+    public static function create() {
+	return new self;
+    }
 
     public function attach(\SplObserver $observer) {
 	$this->observers[] = $observer;
@@ -30,10 +38,6 @@ class Handler implements \SplSubject {
 	}
     }
 
-    public function getError() {
-	return $this->error;
-    }
-
     public function notify() {
 	foreach ($this->observers as $observer) {
 	    $observer->update($this);
@@ -41,8 +45,27 @@ class Handler implements \SplSubject {
     }
 
     public function trace($errno, $errstr, $errfile, $errline) {
-	$this->error = '[' . $errno . '] ' . $errstr . "\n" . 'Fichier : ' . $errfile . ' (ligne ' . $errline . ')';
+	$this->errno = $errno;
+	$this->errstr = $errstr;
+	$this->errline = $errline;
+	$this->errfile = $errfile;
 	$this->notify();
+    }
+
+    public function getErrno() {
+	return $this->errno;
+    }
+
+    public function getErrstr() {
+	return $this->errstr;
+    }
+
+    public function getErrfile() {
+	return $this->errfile;
+    }
+
+    public function getErrline() {
+	return $this->errline;
     }
 
 }

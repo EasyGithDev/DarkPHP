@@ -44,7 +44,12 @@ class FrontObserver implements \SplObserver {
     }
 
     public function update(\SplSubject $obj) {
-	echo '<pre>', $obj->getError(), '</pre>';
+	echo '<table>
+	    <tr><td>Satus</td><td>' . $obj->getErrno() . '</td></tr>
+	    <tr><td>Message</td><td>' . $obj->getErrstr() . '</td></tr>
+	    <tr><td>File</td><td>' . $obj->getErrfile() . '</td></tr>
+	    <tr><td>Line</td><td>' . $obj->getErrline() . '</td></tr>
+	    </table>';
     }
 
 }

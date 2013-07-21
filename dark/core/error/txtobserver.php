@@ -22,8 +22,14 @@ class TxtObserver implements \SplObserver {
 
     public function update(\SplSubject $obj) {
 	$filename = 'error-' . date('Y-m-d') . '.txt';
+	$fields = array(
+	    date('Y-m-d H:i:s'),
+	    $obj->getErrno(), 
+	    $obj->getErrstr(), 
+	    $obj->getErrfile(), 
+	    $obj->getErrline());
 	$handle = fopen($this->dir . DIRECTORY_SEPARATOR . $filename, 'a+');
-	fwrite($handle, $obj->getError() . PHP_EOL);
+	fputcsv($handle, $fields, ';');
 	fclose($handle);
     }
 
