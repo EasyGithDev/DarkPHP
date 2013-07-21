@@ -22,7 +22,10 @@ class MailObserver implements \SplObserver {
 
     public function update(\SplSubject $obj) {
 	$subject = $_SERVER['PHP_HOST'] . ' Error';
-	$body = $obj->getFormated();
+	$body = "Erreur n° : " . $obj->getErrno() . "\n" .
+		"Message : " . $obj->getErrstr() . "\n" .
+		"File : " . $obj->getErrfile() . "\n" .
+		"Line : " . $obj->getErrline();
 	mail($this->email, $subject, $body);
     }
 

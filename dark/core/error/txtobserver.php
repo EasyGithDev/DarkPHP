@@ -24,9 +24,9 @@ class TxtObserver implements \SplObserver {
 	$filename = 'error-' . date('Y-m-d') . '.txt';
 	$fields = array(
 	    date('Y-m-d H:i:s'),
-	    $obj->getErrno(), 
-	    $obj->getErrstr(), 
-	    $obj->getErrfile(), 
+	    $obj->getErrno(),
+	    $obj->getErrstr(),
+	    $obj->getErrfile(),
 	    $obj->getErrline());
 	$handle = fopen($this->dir . DIRECTORY_SEPARATOR . $filename, 'a+');
 	fputcsv($handle, $fields, ';');
