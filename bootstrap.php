@@ -71,9 +71,9 @@ $profiler = Profiler::create();
 /**
  * Loading the handler error
  */
-$handler = new Handler();
-$handler->attach(new TxtObserver(LOGPATH));
-$handler->attach(new FrontObserver());
+$handler = Handler::create()
+	->attach(new TxtObserver(LOGPATH))
+	->attach(new FrontObserver());
 
 /**
  * Register all the error/shutdown handlers
