@@ -39,7 +39,8 @@ namespace Dark\Core\Db;
  */
 class Db {
 
-    private $link;
+    protected $link;
+    protected $debug;
 
     public function __construct(DbConnector $connector) {
 
@@ -58,6 +59,7 @@ class Db {
 		printf("Erreur lors du chargement du jeu de caractères %s : %s\n", $charset, mysqli_error($this->link));
 		die();
 	    }
+	$this->debug = FALSE;
     }
 
     public function prepareValues($values) {
@@ -96,7 +98,20 @@ class Db {
 	return $this->link;
     }
 
+    public function getDebug() {
+	return $this->debug;
+    }
+
+    public function setDebug($debug) {
+	$this->debug = $debug;
+	return $this;
+    }
+
     public function query($sql) {
+
+	if ($this->debug)
+	    return $sql;
+
 	if (!($result = mysqli_query($this->link, $sql)))
 	    throw new \Exception(\mysqli_error($this->link));
 
@@ -173,7 +188,7 @@ class Db {
 	$str_where = '';
 	if (count($where)) {
 	    if (!($str_where = $this->prepareCriterias($where)))
-		throw new \Exception('Criterias parsing error');
+		return FALSE;
 	}
 
 	$sql = 'UPDATE ' . $priority . (($ignore) ? ' IGNORE' : '') .
@@ -192,9 +207,8 @@ class Db {
 	$str_where = '';
 	if (count($where)) {
 	    if (!($str_where = $this->prepareCriterias($where)))
-		throw new \Exception('Criterias parsing error');
+		return FALSE;
 	}
-
 
 	$sql = 'DELETE ' . $priority . (($ignore) ? ' IGNORE' : '') .
 		' FROM ' . $table .
