@@ -32,7 +32,6 @@ namespace Dark\Core\Db;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-
 /**
  * Description of Db
  *
@@ -74,7 +73,7 @@ class DbTable {
 	$str_colums = (isset($sql['colums']) and count($sql['colums'])) ? implode(',', $sql['colums']) : '*';
 	$str_where = (isset($sql['where']) and count($sql['where'])) ? ' WHERE ' . $this->db->prepareCriterias($sql['where']) : '';
 	$str_groupby = (isset($sql['groupby']) and count($sql['groupby'])) ? ' GROUP BY ' . implode(',', $sql['groupby']) : '';
-	$str_having = (isset($sql['groupby']) and count($sql['having'])) ? ' HAVING ' . implode(',', $sql['having']) : '';
+	$str_having = (isset($sql['having']) and count($sql['having'])) ? ' HAVING ' . implode(',', $sql['having']) : '';
 	$str_orderby = (isset($sql['orderby']) and count($sql['orderby'])) ? ' ORDER BY ' . implode(',', $sql['orderby']) : '';
 	$str_limit = (isset($sql['limit']) and count($sql['limit'])) ? ' LIMIT ' . implode(',', $sql['limit']) : '';
 
@@ -85,10 +84,24 @@ class DbTable {
 		$str_having .
 		$str_orderby .
 		$str_limit;
-	
+
 	//echo $sql;
-	
+
 	return $this->db->fetchIterator($sql, $mode);
+    }
+    
+    public function fetchOne($sql = array()) {
+	
+	$str_colums = (isset($sql['colums']) and count($sql['colums'])) ? implode(',', $sql['colums']) : '*';
+	$str_where = (isset($sql['where']) and count($sql['where'])) ? ' WHERE ' . $this->db->prepareCriterias($sql['where']) : '';
+	$str_limit =  ' LIMIT 1';
+
+	$sql = 'SELECT ' . $str_colums . '
+		FROM ' . $this->name .
+		$str_where .
+		$str_limit;
+	
+	return $this->db->fetchOne($sql);
     }
 
     public function insert($values, $ignore = FALSE, $priority = '') {
