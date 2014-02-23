@@ -54,6 +54,11 @@ class Registry {
 	return self::$instance;
     }
 
+    /**
+     * 
+     * @param type $name
+     * @return boolean
+     */
     public function __get($name) {
 	if (empty($name))
 	    return FALSE;
