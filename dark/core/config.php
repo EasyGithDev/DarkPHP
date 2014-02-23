@@ -28,6 +28,11 @@ class Config {
 	return self::$instance;
     }
 
+    public static function reset() {
+	self::$instance = NULL;
+	return self::create();
+    }
+
     public function load($filepath) {
 	if (file_exists($filepath))
 	    $this->infos = array_merge($this->infos, parse_ini_file($filepath, TRUE));
