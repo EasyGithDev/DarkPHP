@@ -132,10 +132,8 @@ class Application {
 	setlocale(LC_ALL, $this->local);
 
 	// Loading the configuration files
-	$config = Config::create();
-
 	foreach ($this->configFiles as $v) {
-	    $config->load(($this->configPath . DIRECTORY_SEPARATOR . $v));
+	    Config::load(($this->configPath . DIRECTORY_SEPARATOR . $v));
 	}
 
 	// Loading the profiling system

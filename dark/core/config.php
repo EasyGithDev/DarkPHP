@@ -14,35 +14,10 @@ namespace Dark\Core;
  */
 class Config {
 
-    protected static $instance = NULL;
-    private $infos;
-
-    protected function __construct() {
-	$this->infos = array();
-    }
-
-    public static function create() {
-	if (is_null(self::$instance)) {
-	    self::$instance = new self();
-	}
-	return self::$instance;
-    }
-
-    public static function reset() {
-	self::$instance = NULL;
-	return self::create();
-    }
-
-    public function load($filepath) {
-	if (file_exists($filepath))
-	    $this->infos = array_merge($this->infos, parse_ini_file($filepath, TRUE));
-	return $this;
-    }
-
-    public function __get($name) {
-	if (!isset($this->infos[$name]))
-	    return FALSE;
-	return json_decode(json_encode($this->infos[$name]));
+    public static function load($filePath) {
+	if (is_readable($filePath))
+	    return json_decode(json_encode(parse_ini_file($filePath, TRUE)));
+	return FALSE;
     }
 
 }
