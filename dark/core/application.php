@@ -131,9 +131,14 @@ class Application {
 
 	setlocale(LC_ALL, $this->local);
 
+	$registry = Registry\Registry::create();
+
 	// Loading the configuration files
 	foreach ($this->configFiles as $v) {
-	    Config::load(($this->configPath . DIRECTORY_SEPARATOR . $v));
+	    if (($config = Config::load($this->configPath . DIRECTORY_SEPARATOR . $v)) !== FALSE) {
+		$key = pathinfo($v, PATHINFO_FILENAME);
+		$registry->$key = $config;
+	    }
 	}
 
 	// Loading the profiling system
