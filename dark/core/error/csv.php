@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * DarkPHP - a PHP library of components
  *
@@ -31,21 +30,33 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Dark\Core\error;
 
-class FrontObserver implements \SplObserver {
+namespace Dark\Core\Error;
 
-    public function __construct() {
-	
+/**
+ * Description of CsvWritter
+ *
+ * @author florent
+ */
+class Csv implements \SplObserver {
+
+    protected $dir;
+
+    public function __construct($dir) {
+	$this->dir = $dir;
     }
 
     public function update(\SplSubject $obj) {
-	echo '<table>
-	    <tr><td>Satus</td><td>' . $obj->getErrno() . '</td></tr>
-	    <tr><td>Message</td><td>' . $obj->getErrstr() . '</td></tr>
-	    <tr><td>File</td><td>' . $obj->getErrfile() . '</td></tr>
-	    <tr><td>Line</td><td>' . $obj->getErrline() . '</td></tr>
-	    </table>';
+	$filename = 'error-' . date('Y-m-d') . '.txt';
+	$fields = array(
+	    date('Y-m-d H:i:s'),
+	    $obj->getErrno(),
+	    $obj->getErrstr(),
+	    $obj->getErrfile(),
+	    $obj->getErrline());
+	$handle = fopen($this->dir . DIRECTORY_SEPARATOR . $filename, 'a+');
+	fputcsv($handle, $fields, ';');
+	fclose($handle);
     }
 
 }

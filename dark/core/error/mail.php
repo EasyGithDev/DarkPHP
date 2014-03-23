@@ -38,7 +38,7 @@ namespace Dark\Core\Error;
  *
  * @author florent
  */
-class MailObserver implements \SplObserver {
+class Mail implements \SplObserver {
 
     protected $email;
 
