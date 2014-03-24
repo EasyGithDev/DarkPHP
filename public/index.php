@@ -9,7 +9,7 @@ echo '<br/>-----------------------------------------------------------------<br/
  * Define constantes
  */
 define('DS', DIRECTORY_SEPARATOR);
-define('CORE_PATH', __DIR__ . DS . '../dark' . DS . 'core');
+define('CORE_PATH', __DIR__ . DS . '../vendor' . DS . 'dark');
 define('CONFIG_PATH', __DIR__ . DS . '../config');
 define('LOG_PATH', __DIR__ . DS . '../log');
 define('APPLICATION_PATH', __DIR__ . DS . '../application');
@@ -19,8 +19,8 @@ define('APPLICATION_PATH', __DIR__ . DS . '../application');
  */
 require CORE_PATH . DS . 'autoloader.php';
 
-\Dark\Core\Autoloader::add_namespace('Dark\\Core', CORE_PATH . DS);
-\Dark\Core\Autoloader::add_core_namespace('Dark\\Core', true);
+//\Dark\Core\Autoloader::add_namespace('Dark\\Core', CORE_PATH . DS);
+//\Dark\Core\Autoloader::add_core_namespace('Dark\\Core', true);
 
 
 $classes = array(
@@ -35,12 +35,12 @@ $classes = array(
 );
 
 //\Dark\Core\Autoloader::add_classes($classes);
-\Dark\Core\Autoloader::register();
+\Dark\Autoloader::register();
 
-foreach (array_keys($classes) as $class)
-    Dark\Core\Autoloader::alias_to_namespace($class);
+//foreach (array_keys($classes) as $class)
+    //Dark\Core\Autoloader::alias_to_namespace($class);
 
-$app = Dark\Core\Application::create();
+$app = Dark\Application::create();
 $app->applicationPath = APPLICATION_PATH;
 $app->configPath = CONFIG_PATH;
 //->setLogPath(LOG_PATH)
