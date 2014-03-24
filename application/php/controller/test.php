@@ -1,6 +1,9 @@
 <?php
 
-namespace Dark\Core\Db;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
 /**
  * DarkPHP - a PHP library of components
@@ -31,60 +34,24 @@ namespace Dark\Core\Db;
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+use Dark\Core;
 
-/**
- * Description of Db
- *
- * @author florent
- */
-class DbMapper extends DbTable {
+class TestController extends Core\Controller {
 
-    protected $idx = 'id';
-    protected $id = NULL;
-    protected $data = array();
-
-    public function __construct($name, Db $db = NULL) {
-	parent::__construct($name, $db);
+    public function init() {
+	echo 'init';
+    }
+    
+    public function indexAction() {
+	
+	$this->view->msg = 'zobi';
+	$this->view->load('test');
     }
 
-    public function setId($id) {
-	$this->id = $id;
-	return $this;
+    public function coucouAction() {
+	
+	$this->view->msg = 'zobi';
+	$this->view->load('test');
     }
-
-    public function getId() {
-	return $this->id;
-    }
-
-    public function load() {
-	if (!is_null($this->id)) {
-	    $sql = array('where' => array($this->idx, '=', $this->id));
-	    $row = $this->fetchOne($sql);
-
-	    foreach ($row as $key => $val) {
-		$this->data[$key] = $val;
-	    }
-	    unset($this->data[$this->idx]);
-	}
-	return $this;
-    }
-
-    public function save() {
-	if (is_null($this->id)) {
-	    $this->id = $this->insert($this->data);
-	} else {
-	    $where = array($this->idx, '=', $this->id);
-	    $this->update($this->data, $where);
-	}
-	return $this;
-    }
-
-    public function __get($key) {
-	return isset($this->data[$key]) ? $this->data[$key] : FALSE;
-    }
-
-    public function __set($key, $value) {
-	$this->data[$key] = $value;
-    }
-
+    
 }

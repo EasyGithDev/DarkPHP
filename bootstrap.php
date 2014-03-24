@@ -26,27 +26,27 @@ setlocale(LC_ALL, 'fr_FR');
  * Define constantes
  */
 define('DS', DIRECTORY_SEPARATOR);
-define('COREPATH', __DIR__ . DS . 'dark' . DS . 'core');
+define('CORE_PATH', __DIR__ . DS . 'dark' . DS . 'core');
 define('CONFIGPATH', __DIR__ . DS . 'config');
 define('LOGPATH', __DIR__ . DS . 'log');
 
 /**
  * Loading the autoloader
  */
-require COREPATH . DS . 'autoloader.php';
+require CORE_PATH . DS . 'autoloader.php';
 
-\Dark\Core\Autoloader::add_namespace('Dark\\Core', COREPATH . DS);
+\Dark\Core\Autoloader::add_namespace('Dark\\Core', CORE_PATH . DS);
 \Dark\Core\Autoloader::add_core_namespace('Dark\\Core', true);
 
 $classes = array(
-    'Dark\\Core\\Db\\DbConnector' => COREPATH . '/db/dbconnector.php',
-    'Dark\\Core\\Db\\DbIterator' => COREPATH . '/db/dbiterator.php',
-    'Dark\\Core\\Db\\Db' => COREPATH . '/db/db.php',
-    'Dark\\Core\\Error\\Handler' => COREPATH . '/error/handler.php',
-    'Dark\\Core\\Error\\TxtObserver' => COREPATH . '/error/txtobserver.php',
-    'Dark\\Core\\Error\\FrontObserver' => COREPATH . '/error/frontobserver.php',
-    'Dark\\Core\\Profiler' => COREPATH . '/error/profiler.php',
-    'Dark\\Core\\Config' => COREPATH . '/error/config.php',
+    'Dark\\Core\\Db\\DbConnector' => CORE_PATH . '/db/dbconnector.php',
+    'Dark\\Core\\Db\\DbIterator' => CORE_PATH . '/db/dbiterator.php',
+    'Dark\\Core\\Db\\Db' => CORE_PATH . '/db/db.php',
+    'Dark\\Core\\Error\\Handler' => CORE_PATH . '/error/handler.php',
+    'Dark\\Core\\Error\\TxtObserver' => CORE_PATH . '/error/txtobserver.php',
+    'Dark\\Core\\Error\\FrontObserver' => CORE_PATH . '/error/frontobserver.php',
+    'Dark\\Core\\Profiler' => CORE_PATH . '/error/profiler.php',
+    'Dark\\Core\\Config' => CORE_PATH . '/error/config.php',
 );
 
 //\Dark\Core\Autoloader::add_classes($classes);

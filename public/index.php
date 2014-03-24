@@ -1,0 +1,48 @@
+<?php
+
+echo '<br/>-----------------------------------------------------------------<br/>';
+echo 'Création du bootstrap';
+echo '<br/>-----------------------------------------------------------------<br/>';
+
+
+/**
+ * Define constantes
+ */
+define('DS', DIRECTORY_SEPARATOR);
+define('CORE_PATH', __DIR__ . DS . '../dark' . DS . 'core');
+define('CONFIG_PATH', __DIR__ . DS . '../config');
+define('LOG_PATH', __DIR__ . DS . '../log');
+define('APPLICATION_PATH', __DIR__ . DS . '../application');
+
+/**
+ * Loading the autoloader
+ */
+require CORE_PATH . DS . 'autoloader.php';
+
+\Dark\Core\Autoloader::add_namespace('Dark\\Core', CORE_PATH . DS);
+\Dark\Core\Autoloader::add_core_namespace('Dark\\Core', true);
+
+
+$classes = array(
+    'Dark\\Core\\Db\\DbConnector' => CORE_PATH . '/db/dbconnector.php',
+    'Dark\\Core\\Db\\DbIterator' => CORE_PATH . '/db/dbiterator.php',
+    'Dark\\Core\\Db\\Db' => CORE_PATH . '/db/db.php',
+    'Dark\\Core\\Error\\Handler' => CORE_PATH . '/error/handler.php',
+    'Dark\\Core\\Error\\Csv' => CORE_PATH . '/error/csv.php',
+    'Dark\\Core\\Error\\Display' => CORE_PATH . '/error/display.php',
+    'Dark\\Core\\Profiler' => CORE_PATH . '/error/profiler.php',
+    'Dark\\Core\\Config' => CORE_PATH . '/error/config.php',
+);
+
+//\Dark\Core\Autoloader::add_classes($classes);
+\Dark\Core\Autoloader::register();
+
+foreach (array_keys($classes) as $class)
+    Dark\Core\Autoloader::alias_to_namespace($class);
+
+$app = Dark\Core\Application::create();
+$app->applicationPath = APPLICATION_PATH;
+$app->configPath = CONFIG_PATH;
+//->setLogPath(LOG_PATH)
+$app->configFiles = array('conf.ini', 'database.ini');
+$app->start();
