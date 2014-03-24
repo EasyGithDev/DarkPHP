@@ -69,7 +69,7 @@ class Application {
     }
 
     public function __get($name) {
-	return isset($this->data[$name]) ? $this->data : FALSE;
+	return isset($this->data[$name]) ? $this->data[$name] : FALSE;
     }
 
     public function start() {

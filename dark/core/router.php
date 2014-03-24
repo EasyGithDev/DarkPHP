@@ -58,9 +58,6 @@ class Router {
 
     public function __construct(Application $app) {
 	$this->app = $app;
-	
-	print_r($app);
-	
 	$this->viewPath = $this->app->applicationPath . DIRECTORY_SEPARATOR . 'php/view';
 	$this->controllerPath = $this->app->applicationPath . DIRECTORY_SEPARATOR . 'php/controller';
     }
