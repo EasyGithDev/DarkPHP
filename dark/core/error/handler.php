@@ -54,6 +54,7 @@ class Handler implements \SplSubject {
 
     public function register() {
 	set_error_handler(array($this, 'trace'));
+	return $this;
     }
 
     public function attach(\SplObserver $observer) {

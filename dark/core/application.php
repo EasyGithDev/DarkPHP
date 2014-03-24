@@ -40,17 +40,18 @@ namespace Dark\Core;
 class Application {
 
     protected static $instance;
-    
-    protected $configPath = '';
-    protected $applicationPath = '';
-    protected $configFiles = array();
-    protected $encoding = 'UTF-8';
-    protected $local = 'fr_FR';
-    protected $errorHandler = NULL;
-    protected $exceptionHandler = NULL;
-    protected $router = NULL;
-    protected $profiler = NULL;
-    protected $env = '';
+    protected $data = array(
+	'configPath' => '',
+	'applicationPath' => '',
+	'configFiles' => array(),
+	'encoding' => 'UTF-8',
+	'local' => 'fr_FR',
+	'errorHandler' => NULL,
+	'exceptionHandler' => NULL,
+	'router' => NULL,
+	'profiler' => NULL,
+	'env' => '',
+    );
 
     protected function __construct() {
 	
@@ -63,54 +64,12 @@ class Application {
 	return self::$instance;
     }
 
-    public function setConfigPath($configPath) {
-	$this->configPath = $configPath;
-	return $this;
+    public function __set($name, $value) {
+	$this->data[$name] = $value;
     }
 
-    public function setApplicationPath($applicationPath) {
-	$this->applicationPath = $applicationPath;
-	return $this;
-    }
-
-    public function getApplicationPath() {
-	return $this->applicationPath;
-    }
-
-    public function setEncoding($encoding) {
-	$this->encoding = $encoding;
-	return $this;
-    }
-
-    public function setErrorHandler() {
-	return $this;
-    }
-
-    public function setExceptionHandler() {
-	return $this;
-    }
-
-    public function setLogPath($logPath) {
-	$this->local = $local;
-    }
-    
-    public function setLocal($local) {
-	$this->local = $local;
-    }
-
-    public function setRouter($router) {
-	$this->router = $router;
-	return $this;
-    }
-
-    public function setProfiler($profiler) {
-	$this->profiler = $profiler;
-	return $this;
-    }
-
-    public function setConfigFiles($configFiles) {
-	$this->configFiles = $configFiles;
-	return $this;
+    public function __get($name) {
+	return isset($this->data[$name]) ? $this->data : FALSE;
     }
 
     public function start() {
@@ -119,26 +78,26 @@ class Application {
 	$registry = Registry\Registry::create();
 
 	// Loading the configuration files
-	foreach ($this->configFiles as $v) {
-	    if (($config = Config::load($this->configPath . DIRECTORY_SEPARATOR . $v)) !== FALSE) {
+	foreach ($this->data['configFiles'] as $v) {
+	    if (($config = Config::load($this->data['configPath'] . DIRECTORY_SEPARATOR . $v)) !== FALSE) {
 		$key = pathinfo($v, PATHINFO_FILENAME);
 		$registry->$key = $config;
 	    }
 	}
-	
-	header('Content-type: text/html; charset=' . $this->encoding);
+
+	header('Content-type: text/html; charset=' . $this->data['encoding']);
 
 	// Langage par défaut
-	ini_set('mbstring.language', $this->encoding);
+	ini_set('mbstring.language', $this->data['encoding']);
 
 	// Jeu de caractère interne
-	ini_set('mbstring.internal_encoding', $this->encoding);
+	ini_set('mbstring.internal_encoding', $this->data['encoding']);
 
 	// Jeu de caractères par défaut pour les données d'entrée HTTP
-	ini_set('mbstring.http_input', $this->encoding);
+	ini_set('mbstring.http_input', $this->data['encoding']);
 
 	// Jeu de caractères par défaut pour les données de sortie HTTP
-	ini_set('mbstring.http_output', $this->encoding);
+	ini_set('mbstring.http_output', $this->data['encoding']);
 
 	// Ordre de détection des jeux de caractères
 	ini_set('mbstring.detect_order', 'auto');
@@ -146,17 +105,17 @@ class Application {
 	// A faire dans le php.ini ou httpd.conf
 	//ini_set('mbstring.func_overload', 6);
 
-	setlocale(LC_ALL, $this->local);
+	setlocale(LC_ALL, $this->data['local']);
 
 	// Loading the profiling system
-	$this->profiler = Profiler::create();
+	$this->data['profiler'] = Profiler::create();
 
 	// Loading the error handler
-	Error\Handler::create()->register();
-	
+	$this->data['errorHandler'] = Error\Handler::create()->register()->attach(new error\Display());
+
 	// Loading the router
-	$this->router = new Router($this);
-	$this->router->run();
+	$this->data['router'] = new Router($this);
+	$this->data['router']->run();
     }
 
 }

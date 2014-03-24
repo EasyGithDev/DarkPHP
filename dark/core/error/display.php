@@ -33,7 +33,7 @@
 
 namespace Dark\Core\error;
 
-class Front implements \SplObserver {
+class Display implements \SplObserver {
 
     public function __construct() {
 	

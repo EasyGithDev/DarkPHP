@@ -39,11 +39,14 @@ namespace Dark\Core;
 
 class Router {
 
-    const DEFAULT_CONTROLLER = 'indexController';
-    const DEFAULT_METHOD = 'indexAction';
+    const INIT_METHOD = 'init';
+    const DEFAULT_MODULE = '';
+    const DEFAULT_CONTROLLER = 'index';
+    const DEFAULT_METHOD = 'index';
     const URI_DELIMITER = '/';
-    const CONTOLLER_EXT = '.php';
+    const CONTROLLER_EXT = '.php';
     const SUFFIX_METHOD = 'Action';
+    const SUFFIX_OBJECT = 'Controller';
 
     protected static $instance;
     protected $app = NULL;
@@ -51,39 +54,80 @@ class Router {
     protected $viewPath = '';
     protected $controller = NULL;
     protected $view = NULL;
+    protected $routes = array();
 
     public function __construct(Application $app) {
 	$this->app = $app;
-	$this->viewPath = $this->app->getApplicationPath() . DIRECTORY_SEPARATOR . 'php/view';
-	$this->controllerPath = $this->app->getApplicationPath() . DIRECTORY_SEPARATOR . 'php/controller';
+	
+	print_r($app);
+	
+	$this->viewPath = $this->app->applicationPath . DIRECTORY_SEPARATOR . 'php/view';
+	$this->controllerPath = $this->app->applicationPath . DIRECTORY_SEPARATOR . 'php/controller';
     }
 
     public function run() {
 	$uri = $_SERVER['REQUEST_URI'];
-	$segments = explode(self::URI_DELIMITER, $uri);
-	if (count($segments) == 0) {
-	    $controller = self::DEFAULT_CONTROLLER . self::CONTOLLER_EXT;
-	} else {
-	    // Removing the first sladshe
-	    array_shift($segments);
-	    $controller = $segments[2] . self::CONTOLLER_EXT;
+
+	$route = array();
+	foreach ($this->routes as $k => $v) {
+	    if (preg_match($k, $uri)) {
+		$route = $v;
+		break;
+	    }
+	}
+
+	if (count($route) == 0) {
+	    $route['module'] = self::DEFAULT_MODULE;
+	    $route['controller'] = self::DEFAULT_CONTROLLER;
+	    $route['action'] = self::DEFAULT_METHOD;
+
+	    $segments = explode(self::URI_DELIMITER, $uri);
+
+	    // Removing the first slashe
+	    if (count($segments) != 0) {
+		array_shift($segments);
+	    }
+
+	    if (isset($segments[2])) {
+		$route['module'] = $segments[2];
+	    }
+
+	    if (isset($segments[3])) {
+		$route['controller'] = $segments[3];
+	    }
+
+	    if (isset($segments[4])) {
+		$route['action'] = $segments[4];
+	    }
 	}
 
 	// Loading the contoller
-	require ($this->controllerPath . DIRECTORY_SEPARATOR . $controller);
+	$controllerPath = $this->controllerPath . DIRECTORY_SEPARATOR .
+		$route['module'] . DIRECTORY_SEPARATOR .
+		$route['controller'] . self::CONTROLLER_EXT;
+	if (!file_exists($controllerPath))
+	    $controllerPath = $this->controllerPath . DIRECTORY_SEPARATOR .
+		    self::DEFAULT_MODULE . DIRECTORY_SEPARATOR .
+		    $route['controller'] . self::CONTROLLER_EXT;
+
+	require ($controllerPath);
 
 	// Create the controller
-	$controller = ucfirst($segments[2]) . 'Controller';
+	$controller = $route['controller'] . self::SUFFIX_OBJECT;
 	$obj = new $controller($this);
 
 	// Loading the action
-	if (isset($segments[3])) {
-	    $method = $segments[3] . self::SUFFIX_METHOD;
-	} else {
-	    $method = self::DEFAULT_METHOD;
+	$method = $route['action'] . self::SUFFIX_METHOD;
+
+	if (method_exists($obj, self::INIT_METHOD)) {
+	    $obj->init();
 	}
 
 	$obj->$method();
+    }
+
+    public function addRoute($route) {
+	$this->routes[] = $route;
     }
 
     public function getViewPath() {
