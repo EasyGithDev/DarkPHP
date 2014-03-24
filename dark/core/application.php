@@ -40,6 +40,7 @@ namespace Dark\Core;
 class Application {
 
     protected static $instance;
+    
     protected $configPath = '';
     protected $applicationPath = '';
     protected $configFiles = array();
@@ -49,6 +50,7 @@ class Application {
     protected $exceptionHandler = NULL;
     protected $router = NULL;
     protected $profiler = NULL;
+    protected $env = '';
 
     protected function __construct() {
 	
@@ -88,6 +90,10 @@ class Application {
 	return $this;
     }
 
+    public function setLogPath($logPath) {
+	$this->local = $local;
+    }
+    
     public function setLocal($local) {
 	$this->local = $local;
     }
@@ -109,6 +115,17 @@ class Application {
 
     public function start() {
 
+	// Create the registry
+	$registry = Registry\Registry::create();
+
+	// Loading the configuration files
+	foreach ($this->configFiles as $v) {
+	    if (($config = Config::load($this->configPath . DIRECTORY_SEPARATOR . $v)) !== FALSE) {
+		$key = pathinfo($v, PATHINFO_FILENAME);
+		$registry->$key = $config;
+	    }
+	}
+	
 	header('Content-type: text/html; charset=' . $this->encoding);
 
 	// Langage par défaut
@@ -131,19 +148,12 @@ class Application {
 
 	setlocale(LC_ALL, $this->local);
 
-	$registry = Registry\Registry::create();
-
-	// Loading the configuration files
-	foreach ($this->configFiles as $v) {
-	    if (($config = Config::load($this->configPath . DIRECTORY_SEPARATOR . $v)) !== FALSE) {
-		$key = pathinfo($v, PATHINFO_FILENAME);
-		$registry->$key = $config;
-	    }
-	}
-
 	// Loading the profiling system
 	$this->profiler = Profiler::create();
 
+	// Loading the error handler
+	Error\Handler::create()->register();
+	
 	// Loading the router
 	$this->router = new Router($this);
 	$this->router->run();
