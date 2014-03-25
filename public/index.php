@@ -17,7 +17,7 @@ define('APPLICATION_PATH', __DIR__ . DS . '../application');
 /**
  * Loading the autoloader
  */
-require CORE_PATH . DS . 'autoloader.php';
+require CORE_PATH . DS . 'Autoloader.php';
 
 //\Dark\Core\Autoloader::add_namespace('Dark\\Core', CORE_PATH . DS);
 //\Dark\Core\Autoloader::add_core_namespace('Dark\\Core', true);

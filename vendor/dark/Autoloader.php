@@ -11,7 +11,7 @@
  * @link       http://fuelphp.com
  */
 
-namespace Dark\Core;
+namespace Dark;
 
 /**
  * The Autloader is responsible for all class loading.  It allows you to define
@@ -151,7 +151,7 @@ class Autoloader {
      * @return	void
      */
     public static function register() {
-	spl_autoload_register('Dark\\Core\\Autoloader::load', true, true);
+	spl_autoload_register('Dark\\Autoloader::autoload', true, true);
     }
 
     /**
@@ -187,6 +187,21 @@ class Autoloader {
 	}
     }
 
+    public static function autoload($className)
+{
+    $className = ltrim($className, '\\');
+    $fileName  = '';
+    $namespace = '';
+    if ($lastNsPos = strripos($className, '\\')) {
+        $namespace = substr($className, 0, $lastNsPos);
+        $className = substr($className, $lastNsPos + 1);
+        $fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
+    }
+    $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
+
+    require $fileName;
+}
+    
     /**
      * Loads a class.
      *
