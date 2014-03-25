@@ -35,7 +35,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Dark\Core;
+namespace Dark;
 
 class Application {
 
@@ -81,7 +81,7 @@ class Application {
     public function start() {
 
 	// Create the registry
-	$registry = Registry\Registry::create();
+	$registry = Registry::create();
 
 	// Loading the configuration files
 	foreach ($this->data['configFiles'] as $v) {

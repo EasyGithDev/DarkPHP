@@ -5,7 +5,7 @@
  * and open the template in the editor.
  */
 
-namespace Dark\Core;
+namespace Dark;
 
 /**
  * Description of debuging

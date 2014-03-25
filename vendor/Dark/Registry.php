@@ -31,7 +31,7 @@
  */
 
 
-namespace Dark\Core\Registry;
+namespace Dark;
 
 /**
  * Description of Registry
