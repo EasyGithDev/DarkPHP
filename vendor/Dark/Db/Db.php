@@ -1,6 +1,6 @@
 <?php
 
-namespace Dark\Core\Db;
+namespace Dark\Db;
 
 /**
  * DarkPHP - a PHP library of components

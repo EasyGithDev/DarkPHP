@@ -31,7 +31,7 @@
  */
 
 
-namespace Dark\Core\Db;
+namespace Dark\Db;
 
 /**
  * Description of DBIterator
