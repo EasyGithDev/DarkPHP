@@ -19,9 +19,6 @@ define('APPLICATION_PATH', __DIR__ . DS . '../application');
  */
 require CORE_PATH . DS . 'Autoloader.php';
 
-//\Dark\Core\Autoloader::add_namespace('Dark\\Core', CORE_PATH . DS);
-//\Dark\Core\Autoloader::add_core_namespace('Dark\\Core', true);
-
 
 $classes = array(
     'Dark\\Core\\Db\\DbConnector' => CORE_PATH . '/db/dbconnector.php',
@@ -34,7 +31,6 @@ $classes = array(
     'Dark\\Core\\Config' => CORE_PATH . '/error/config.php',
 );
 
-//\Dark\Core\Autoloader::add_classes($classes);
 \Dark\Autoloader::register();
 
 //foreach (array_keys($classes) as $class)

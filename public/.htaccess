@@ -1,6 +1,15 @@
+# Active la réécriture des adresses
 RewriteEngine On
-
-#RewriteCond %{REQUEST_URI} !-f
-#RewriteCond %{REQUEST_URI} !-d
-#RewriteCond %{REQUEST_URI} !-l
-#RewriteRule ^(.*)$ index.php [QSA,L]
+RewriteBase /dark/DarkPHP/public/
+# Si la requête correspond à un fichier standard dont la taille est supérieure à 0 ...
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+# ... ou à un lien symbolique
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+# ... ou à un répertoire
+RewriteCond %{REQUEST_FILENAME} -d
+# ... on laisse la requête tel quelle (le tiret veut dire pas de substitution)
+# Drapeau NC (No Case) : comparaison insensible à la casse
+# Drapeau L (Last) : ne pas interpréter les règles suivantes
+RewriteRule ^.*$ - [NC,L]
+# Sinon, on redirige vers index.php 
+RewriteRule ^.*$ index.php [NC,L]
