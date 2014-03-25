@@ -31,7 +31,7 @@
  */
 
 
-namespace Dark\Core\Error;
+namespace Dark\Error;
 
 /**
  * Description of MailSender

@@ -31,7 +31,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace Dark\Core\error;
+namespace Dark\error;
 
 class Display implements \SplObserver {
 

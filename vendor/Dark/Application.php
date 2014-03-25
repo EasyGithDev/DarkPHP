@@ -82,7 +82,7 @@ class Application {
 
 	// Create the registry
 	$registry = Registry::create();
-
+/*
 	// Loading the configuration files
 	foreach ($this->data['configFiles'] as $v) {
 	    if (($config = Config::load($this->data['configPath'] . DIRECTORY_SEPARATOR . $v)) !== FALSE) {
@@ -90,7 +90,7 @@ class Application {
 		$registry->$key = $config;
 	    }
 	}
-
+*/
 	header('Content-type: text/html; charset=' . $this->data['encoding']);
 
 	// Langage par défaut
@@ -119,7 +119,7 @@ class Application {
 
 	// Loading the error handler
 	if ($this->data['useErrorHandler']) {
-	    $errorHandler = Error\Handler::create()->register();
+	    $errorHandler = Handler::create()->register();
 	    foreach ($this->data['errorHandlerPlugins'] as $plugin) {
 		$errorHandler->attach($plugin);
 	    }
