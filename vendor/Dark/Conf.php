@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 /**
  * DarkPHP - a PHP library of components
  *
@@ -30,15 +35,9 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-
 namespace Dark;
 
-/**
- * Description of Config
- *
- * @author florent
- */
-class Config {
+class Conf {
 
     public static function load($filePath) {
 	if (is_readable($filePath))

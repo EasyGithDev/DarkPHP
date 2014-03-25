@@ -82,15 +82,15 @@ class Application {
 
 	// Create the registry
 	$registry = Registry::create();
-/*
+
 	// Loading the configuration files
 	foreach ($this->data['configFiles'] as $v) {
-	    if (($config = Config::load($this->data['configPath'] . DIRECTORY_SEPARATOR . $v)) !== FALSE) {
+	    if (($config = Conf::load($this->data['configPath'] . DIRECTORY_SEPARATOR . $v)) !== FALSE) {
 		$key = pathinfo($v, PATHINFO_FILENAME);
 		$registry->$key = $config;
 	    }
 	}
-*/
+
 	header('Content-type: text/html; charset=' . $this->data['encoding']);
 
 	// Langage par défaut
